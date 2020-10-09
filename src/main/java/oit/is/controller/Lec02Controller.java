@@ -14,5 +14,5 @@ public class Lec02Controller {
     model.addAttribute("playerName", name);
     return "lec02.html";
   }
-  
+
 }
