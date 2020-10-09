@@ -15,7 +15,7 @@ public class Lec02Controller {
   }
 
   @GetMapping("/hoi")
-  public String hoi(@PathVariable String hand, ModelMap model) {
+  public String hoi(@PathVariable String hand, ModelMap model1, ModelMap model2, ModelMap model3) {
     String winner = "You Lose...";
     if (hand.equals("Gu")) {
       winner = "Draw";
@@ -23,9 +23,9 @@ public class Lec02Controller {
     if (hand.equals("Pa")) {
       winner = "You Win!!";
     }
-    model.addAttribute("yourHand", hand);
-    model.addAttribute("enemyHand", "Gu");
-    model.addAttribute("jankenResult", winner);
+    model1.addAttribute("yourHand", hand);
+    model2.addAttribute("enemyHand", "Gu");
+    model3.addAttribute("jankenResult", winner);
     return "lec02.html";
   }
 
