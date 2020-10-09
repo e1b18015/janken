@@ -7,12 +7,21 @@
 </head>
 
 <body>
-  <h1>Hi [[${playerName}]]</h1>
+  <h1 th:if="${playerName}">Hi [[${playerName}]]</h1>
   <p>
   <div><a href="/hoi?hand=Gu">ぐー</a>
     <a href="/hoi?hand=Choki">ちょき</a>
     <a href="/hoi?hand=Pa">ぱー</a></div>
   </p>
+  <br />
+  <div th:if="${jankenResult}">
+    あなたの手 [[${yourHand}]]
+    <br />
+    相手の手 [[${enemyHand}]]
+    <br />
+    結果[[${jankenResult}]]
+  </div>
+
 </body>
 
 </html>
