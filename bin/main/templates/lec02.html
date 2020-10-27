@@ -9,24 +9,17 @@
 <body>
   <a href="/logout">ログアウト</a>
   <h1>Lec02 GET!!</h1>
-  <p>エントリー</p>
+  <p th:if="${User}">エントリー</p>
   <ul>
-    <li th:each="user : ${room.users}">[[${user}]]</li>
+    <li th:each="users,stat:${User}">[[${users.user}]]</li>
   </ul>
   <p>Hi [[${loginUser}]]</p>
-  <p>
-  <div><a href="/lec02/hoi?hand=Gu">ぐー</a>
-    <a href="/lec02/hoi?hand=Choki">ちょき</a>
-    <a href="/lec02/hoi?hand=Pa">ぱー</a></div>
-  <div th:if="${jankenResult}">
-    <br />
-    あなたの手 [[${yourHand}]]
-    <br />
-    相手の手 [[${enemyHand}]]
-    <br />
-    結果 [[${jankenResult}]]
+  <p th:if="${Match}">試合結果</p>
+  <div th:each="matches,stat:${Match}">
+    <tr>
+      <td>id:[[${matches.id}]] user_1:[[${matches.user_1}]] user_2:[[${matches.user_2}]] user_1_hand:[[${matches.user_1_hand}]] user_2_hand:[[${matches.user_2_hand}]]</td>
+    </tr>
   </div>
-  </p>
 </body>
 
 </html>
