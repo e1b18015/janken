@@ -20,6 +20,7 @@ public class Lec03AuthConfiguration extends WebSecurityConfigurerAdapter {
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
     auth.inMemoryAuthentication().withUser("user1").password(passwordEncoder().encode("pAssw0rd")).roles("USER");
+    auth.inMemoryAuthentication().withUser("おおはら").password(passwordEncoder().encode("pAssw0rd")).roles("USER");
     auth.inMemoryAuthentication().withUser("admin").password(passwordEncoder().encode("pAssw0rd")).roles("ADMIN");
 
   }
@@ -35,6 +36,9 @@ public class Lec03AuthConfiguration extends WebSecurityConfigurerAdapter {
     http.formLogin();
 
     http.authorizeRequests().antMatchers("/lec02/**").authenticated();
+
+    http.csrf().disable();
+    http.headers().frameOptions().disable();
 
     http.logout().logoutSuccessUrl("/");
   }
