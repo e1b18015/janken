@@ -7,6 +7,14 @@ public class Match {
   String user_1_hand;
   String user_2_hand;
 
+  public Match(int u1, int u2, String h1, String h2) {
+    id = 0;
+    user_1 = u1;
+    user_2 = u2;
+    user_1_hand = h1;
+    user_2_hand = h2;
+  }
+
   public int getId() {
     return id;
   }

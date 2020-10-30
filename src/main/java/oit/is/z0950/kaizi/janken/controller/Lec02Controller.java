@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import oit.is.z0950.kaizi.janken.model.User;
 import oit.is.z0950.kaizi.janken.model.UserMapper;
@@ -23,7 +25,7 @@ public class Lec02Controller {
   @Autowired
   MatchMapper MatchMapper;
 
-  @RequestMapping()
+  @GetMapping
   public String lec02(Principal prin, ModelMap model, ModelMap model2, ModelMap model3) {
     ArrayList<User> User = UserMapper.selectAll();
     String loginUser = prin.getName();
@@ -32,6 +34,38 @@ public class Lec02Controller {
     model2.addAttribute("loginUser", loginUser);
     model3.addAttribute("Match", Match);
     return "lec02.html";
+  }
+
+  @GetMapping("match")
+  public String match(@RequestParam Integer id, Principal prin, ModelMap model, ModelMap model2) {
+    User Enemy = UserMapper.selectById(id);
+    User loginUser = UserMapper.selectByUser(prin.getName());
+    model.addAttribute("Enemy", Enemy);
+    model2.addAttribute("loginUser", loginUser);
+    return "match.html";
+  }
+
+  @GetMapping("hoi")
+  public String hoi(@RequestParam String hand, @RequestParam int id, Principal prin, ModelMap model1, ModelMap model2,
+      ModelMap model3, ModelMap model4, ModelMap model5) {
+    User loginUser = UserMapper.selectByUser(prin.getName());
+    User Enemy = UserMapper.selectById(id);
+    int loginId = loginUser.getId();
+    String winner = "You Lose...";
+    if (hand.equals("Gu")) {
+      winner = "Draw";
+    }
+    if (hand.equals("Pa")) {
+      winner = "You Win!!";
+    }
+    Match newMatch = new Match(loginId, id, hand, "Gu");
+    MatchMapper.insertMatch(newMatch);
+    model1.addAttribute("yourHand", hand);
+    model2.addAttribute("enemyHand", "Gu");
+    model3.addAttribute("jankenResult", winner);
+    model4.addAttribute("loginUser", loginUser);
+    model5.addAttribute("Enemy", Enemy);
+    return "match.html";
   }
 
 }
