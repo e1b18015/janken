@@ -2,7 +2,7 @@ package oit.is.z0950.kaizi.janken.model;
 
 public class User {
   int id;
-  String user;
+  public String user;
 
   public int getId() {
     return id;

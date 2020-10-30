@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Match!</title>
+</head>
+
+<body>
+  <a href="/logout">ログアウト</a>
+  <h1>Match!</h1>
+  <h1>[[${loginUser.user}]] V.S. [[${Enemy.user}]]</h1>
+  <p>
+  <div><a th:href="@{/lec02/hoi(hand=Gu,id=${Enemy.id})}">ぐー</a>
+    <a th:href="@{/lec02/hoi(hand=Choki,id=${Enemy.id})}">ちょき</a>
+    <a th:href="@{/lec02/hoi(hand=Pa,id=${Enemy.id})}">ぱー</a></div>
+  <div th:if="${jankenResult}">
+    <br />
+    あなたの手 [[${yourHand}]]
+    <br />
+    相手の手 [[${enemyHand}]]
+    <br />
+    結果 [[${jankenResult}]]
+  </div>
+  </p>
+  <a href="/lec02">もどる</a>
+</body>
+
+</html>
