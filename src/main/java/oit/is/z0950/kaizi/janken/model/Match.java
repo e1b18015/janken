@@ -6,6 +6,7 @@ public class Match {
   int user_2;
   String user_1_hand;
   String user_2_hand;
+  boolean is_active;
 
   public Match(int u1, int u2, String h1, String h2) {
     id = 0;
@@ -13,6 +14,7 @@ public class Match {
     user_2 = u2;
     user_1_hand = h1;
     user_2_hand = h2;
+    is_active = false;
   }
 
   public int getId() {
