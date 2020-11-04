@@ -2,6 +2,7 @@ CREATE TABLE users (
     id IDENTITY,
     user CHAR NOT NULL
 );
+
 CREATE TABLE matches (
     id IDENTITY,
     user_1 INT NOT NULL,

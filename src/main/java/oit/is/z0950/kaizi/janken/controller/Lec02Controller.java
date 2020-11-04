@@ -14,6 +14,8 @@ import oit.is.z0950.kaizi.janken.model.User;
 import oit.is.z0950.kaizi.janken.model.UserMapper;
 import oit.is.z0950.kaizi.janken.model.Match;
 import oit.is.z0950.kaizi.janken.model.MatchMapper;
+import oit.is.z0950.kaizi.janken.model.MatchInfo;
+import oit.is.z0950.kaizi.janken.model.MatchInfoMapper;
 
 @Controller
 @RequestMapping("/lec02")
@@ -25,11 +27,14 @@ public class Lec02Controller {
   @Autowired
   MatchMapper MatchMapper;
 
+  @Autowired
+  MatchInfoMapper MatchInfoMapper;
+
   @GetMapping
   public String lec02(Principal prin, ModelMap model, ModelMap model2, ModelMap model3) {
-    ArrayList<User> User = UserMapper.selectAll();
+    ArrayList<User> User = UserMapper.selectAllUsers();
     String loginUser = prin.getName();
-    ArrayList<Match> Match = MatchMapper.selectAll();
+    ArrayList<Match> Match = MatchMapper.selectAllMatches();
     model.addAttribute("User", User);
     model2.addAttribute("loginUser", loginUser);
     model3.addAttribute("Match", Match);
@@ -40,6 +45,9 @@ public class Lec02Controller {
   public String match(@RequestParam Integer id, Principal prin, ModelMap model, ModelMap model2) {
     User Enemy = UserMapper.selectById(id);
     User loginUser = UserMapper.selectByUser(prin.getName());
+    int loginId = loginUser.getId();
+    MatchInfo newMatchInfo = new MatchInfo(loginId, id, true);
+    MatchInfoMapper.insertMatchInfo(newMatchInfo);
     model.addAttribute("Enemy", Enemy);
     model2.addAttribute("loginUser", loginUser);
     return "match.html";
@@ -58,7 +66,7 @@ public class Lec02Controller {
     if (hand.equals("Pa")) {
       winner = "You Win!!";
     }
-    Match newMatch = new Match(loginId, id, hand, "Gu");
+    Match newMatch = new Match(loginId, id, hand, "Gu", true);
     MatchMapper.insertMatch(newMatch);
     model1.addAttribute("yourHand", hand);
     model2.addAttribute("enemyHand", "Gu");
