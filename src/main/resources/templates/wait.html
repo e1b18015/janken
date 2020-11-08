@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/schema/security">
+
+<head>
+  <meta charset="utf-8">
+  <title>wait room</title>
+  <script>
+    window.onload = function () {
+      var sse = new EventSource('/lec02/res');
+      sse.onmessage = function (event) {
+        console.log("sse.onmessage")
+        console.log(event.data);
+        var a = document.getElementById("p1");
+        p1.appendChild(document.createTextNode("結果を表示する"));
+      }
+    }
+  </script>
+</head>
+
+<body>
+  <h1>相手の手をまっています</h1>
+  <p>Hi [[${loginUser.user}]]</p>
+  <a id="p1" href='/lec02/kekka'></a>
+</body>
+
+</html>

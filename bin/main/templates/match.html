@@ -11,9 +11,9 @@
   <h1>Match!</h1>
   <h1>[[${loginUser.user}]] V.S. [[${Enemy.user}]]</h1>
   <p>
-  <div><a th:href="@{/lec02/hoi(hand=Gu,id=${Enemy.id})}">ぐー</a>
-    <a th:href="@{/lec02/hoi(hand=Choki,id=${Enemy.id})}">ちょき</a>
-    <a th:href="@{/lec02/hoi(hand=Pa,id=${Enemy.id})}">ぱー</a></div>
+  <div><a th:href="@{/lec02/hoi(myname=${loginUser.user},hand=Gu,id=${Enemy.id})}">ぐー</a>
+    <a th:href="@{/lec02/hoi(myname=${loginUser.user},hand=Choki,id=${Enemy.id})}">ちょき</a>
+    <a th:href="@{/lec02/hoi(myname=${loginUser.user},hand=Pa,id=${Enemy.id})}">ぱー</a></div>
   <div th:if="${jankenResult}">
     <br />
     あなたの手 [[${yourHand}]]

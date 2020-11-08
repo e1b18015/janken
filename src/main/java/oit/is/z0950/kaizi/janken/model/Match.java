@@ -8,6 +8,10 @@ public class Match {
   String user_2_hand;
   boolean is_active;
 
+  public Match() {
+
+  }
+
   public Match(int u1, int u2, String h1, String h2, boolean a) {
     id = 0;
     user_1 = u1;

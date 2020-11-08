@@ -9,6 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import oit.is.z0950.kaizi.janken.model.User;
 import oit.is.z0950.kaizi.janken.model.UserMapper;
@@ -16,6 +17,7 @@ import oit.is.z0950.kaizi.janken.model.Match;
 import oit.is.z0950.kaizi.janken.model.MatchMapper;
 import oit.is.z0950.kaizi.janken.model.MatchInfo;
 import oit.is.z0950.kaizi.janken.model.MatchInfoMapper;
+import oit.is.z0950.kaizi.janken.service.AsyncKekka;
 
 @Controller
 @RequestMapping("/lec02")
@@ -29,6 +31,9 @@ public class Lec02Controller {
 
   @Autowired
   MatchInfoMapper MatchInfoMapper;
+
+  @Autowired
+  AsyncKekka Kekka;
 
   @GetMapping
   public String lec02(Principal prin, ModelMap model, ModelMap model2, ModelMap model3) {
@@ -54,26 +59,39 @@ public class Lec02Controller {
   }
 
   @GetMapping("hoi")
-  public String hoi(@RequestParam String hand, @RequestParam int id, Principal prin, ModelMap model1, ModelMap model2,
-      ModelMap model3, ModelMap model4, ModelMap model5) {
-    User loginUser = UserMapper.selectByUser(prin.getName());
-    User Enemy = UserMapper.selectById(id);
+  public String hoi(@RequestParam String myname, @RequestParam String hand, @RequestParam int id, Principal prin,
+      ModelMap model) {
+    User loginUser = UserMapper.selectByUser(myname);
     int loginId = loginUser.getId();
-    String winner = "You Lose...";
-    if (hand.equals("Gu")) {
-      winner = "Draw";
+    ArrayList<Match> waitMatch = MatchMapper.selectWaitMatches();
+    if (waitMatch.size() != 0) {
+      MatchMapper.waitMatchUpdate(waitMatch.get(0).getId(), hand);
+    } else {
+      Match newMatch = new Match(loginId, id, hand, "wait", false);
+      MatchMapper.insertMatch(newMatch);
     }
-    if (hand.equals("Pa")) {
-      winner = "You Win!!";
-    }
-    Match newMatch = new Match(loginId, id, hand, "Gu", true);
-    MatchMapper.insertMatch(newMatch);
-    model1.addAttribute("yourHand", hand);
-    model2.addAttribute("enemyHand", "Gu");
-    model3.addAttribute("jankenResult", winner);
-    model4.addAttribute("loginUser", loginUser);
-    model5.addAttribute("Enemy", Enemy);
-    return "match.html";
+    model.addAttribute("loginUser", loginUser);
+    return "wait.html";
+  }
+
+  @GetMapping("kekka")
+  public String kekka(Principal prin, ModelMap model, ModelMap model2, ModelMap model3) {
+    ArrayList<User> User = UserMapper.selectAllUsers();
+    String loginUser = prin.getName();
+    ArrayList<Match> Match = MatchMapper.selectAllMatches();
+    MatchMapper.toNonActiveMatch();
+    MatchInfoMapper.toNonActiveMatchInfo();
+    model.addAttribute("User", User);
+    model2.addAttribute("loginUser", loginUser);
+    model3.addAttribute("Match", Match);
+    return "lec02.html";
+  }
+
+  @GetMapping("res")
+  public SseEmitter res() {
+    final SseEmitter sseEmitter = new SseEmitter();
+    this.Kekka.asyncMatchWait(sseEmitter);
+    return sseEmitter;
   }
 
 }

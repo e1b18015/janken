@@ -6,7 +6,11 @@ public class MatchInfo {
   int user_2;
   boolean is_active;
 
-  public MatchInfo(int u1, int u2,boolean a) {
+  public MatchInfo() {
+
+  }
+
+  public MatchInfo(int u1, int u2, boolean a) {
     id = 0;
     user_1 = u1;
     user_2 = u2;
@@ -44,6 +48,5 @@ public class MatchInfo {
   public void setIs_active(boolean is_active) {
     this.is_active = is_active;
   }
-
 
 }
